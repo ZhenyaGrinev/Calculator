@@ -49,6 +49,19 @@ class ViewController: UIViewController {
             display.text!=""
             first=true
         }
+        /*if display.text?.isEmpty ?? true {
+            display.text!
+        }
+        
+        if let text = display.text, !text.isEmpty {
+            text
+        }
+        guard let text = display.text else {print("Error getting value") ; return}
+        text
+        
+        if display.text != nil, display.text!.isEmpty {
+            display.text!
+        }*/
         if(display.text! == "" || display.text==nil){
             let digit  = sender.currentTitle
             display.text! += digit!
