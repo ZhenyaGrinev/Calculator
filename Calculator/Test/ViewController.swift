@@ -10,63 +10,85 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var displayLabel: UILabel!
     @IBOutlet weak var history: UILabel!
+    @IBOutlet weak var stackHistory: UIStackView!
+    
     enum Operation : String {
         case plus = "+"
         case minus = "-"
         case mult = "*"
         case div = "/"
         case remaind = "%"
-        case none = ""
+        case point = "."
     }
+    enum Numbers : Int {
+        case zero = 0
+        case one = 1
+        case two = 2
+        case three = 3
+        case four = 4
+        case five = 5
+        case six = 6
+        case seven = 7
+        case eight = 8
+        case nine = 9
+    }
+    var firstval : Float?
+    var secondval : Float?
+    var resultat : Float?
+    var act : Operation?
+    var number : Numbers?
+    var errorClear = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-    var errorClear = false
     @IBAction func addnumber(sender: UIButton) {
         errorClearFunc()
-        if let text = display.text, let digit = sender.currentTitle {
+        if let text = displayLabel.text {
+            if let num = Numbers.init(rawValue:sender.tag){
             if(text.count>=13){return}
-            if (digit.elementsEqual(".")) {
+                displayLabel.text! += String(num.rawValue)
+            }
+        }
+    }
+    @IBAction func addpoint(sender: UIButton) {
+        errorClearFunc()
+        if let text = displayLabel.text {
+            if(text.count>=13){return}
                 if (text.last=="." || text.isEmpty || text.contains(".")){
                     return
                 } else {
-                    display.text! += digit
+                    displayLabel.text! += Operation.point.rawValue
                 }
-            } else{
-                display.text! += digit
-            }
         }
         
     }
-    var firstval : Float = 0
-    var secondval : Float = 0
-    var resultat : Float = 0
-    var act : Operation = .none
     @IBAction func operation(sender: UIButton) {
         errorClearFunc()
-        if let text = display.text,let digit = sender.currentTitle {
+        if let text = displayLabel.text,let digit = sender.currentTitle {
             if text.isEmpty && digit.isEmpty {return}
             if let  num  = Float(text){
                 firstval = num
-                act = Operation.init(rawValue: digit) ?? .none
-                display.text =  ""
+                act = Operation.init(rawValue: digit) ?? nil
+                displayLabel.text =  String("")
             }
         }
     }
     @IBAction func clearact(sender: UIButton) {
         errorClearFunc()
-        firstval = 0
-        secondval = 0
-        act = .none
-        if display.text != nil {
-            display.text =  ""
+        firstval = nil
+        secondval = nil
+        act = nil
+        if displayLabel.text != nil && history.text != nil{
+            displayLabel.text = String("")
+            history.text =  String("")
         }
     }
     @IBAction func change(sender: UIButton) {
         errorClearFunc()
-        if var text = display.text {
+        if var text = displayLabel.text {
             if (text.isEmpty || text.last=="."){return}
             if(text.first=="-"){
                 text.removeFirst();
@@ -74,54 +96,70 @@ class ViewController: UIViewController {
             else{
                 text="-"+text
             }
-            display.text = text
+            displayLabel.text = text
         }
     }
     
     @IBAction func ravnoact(sender: UIButton) {
         errorClearFunc()
-        if let text = display.text {
+        if let text = displayLabel.text {
         if text.isEmpty{return}
-            if let num = Float(text){
-        secondval=num
-        switch act {
+            if let tx = Float(text){
+            secondval=tx
+            if let num = firstval,let num2 = secondval{
+                if let operat = act{
+        switch operat {
         case .plus:
-            resultat = firstval + secondval
+            resultat = num + num2
         case .minus:
-            resultat = firstval - secondval
+            resultat = num - num2
         case .mult:
-            resultat = firstval * secondval
+            resultat = num * num2
         case .div:
-            if(secondval==0){display.text="Not divide by zero";errorClear = true;return}
-            resultat = firstval / secondval
+            if(secondval==0){displayLabel.text="Not divide by zero";errorClear = true;return}
+            resultat = num / num2
         case .remaind:
-            resultat = firstval.truncatingRemainder(dividingBy: secondval)
+            resultat = num.truncatingRemainder(dividingBy: num2)
         default:
             return
         }
-        if history.text != nil {
-            history.text = "\(firstval)\(act.rawValue)\(secondval)"
-        }
-        display.text = String(resultat)
-                act = .none
+        /*if history.text != nil {
+            history.text! += "\(num)\(operat.rawValue)\(num2) \n"
+        }*/
+            let sss = UITextField()
+            sss.text = "\(num)\(operat.rawValue)\(num2)"
+            if stackHistory.subviews.count < 5 {
+            stackHistory.addArrangedSubview(sss)
+            }
+            else{
+                stackHistory.subviews[0].removeFromSuperview()
+                stackHistory.addArrangedSubview(sss)
+                print(stackHistory.subviews.count)
+            }
+                if let res = resultat{
+        displayLabel.text = String(res)
+                act = nil
+                }
+            }
+            }
             }
         }
     }
     func errorClearFunc(){
         if(errorClear){
             errorClear = false
-            if(display.text != nil){
-                display.text=""
+            if(displayLabel.text != nil){
+                displayLabel.text = String("")
             }
         }
     }
     @IBAction func back(sender: UIButton) {
         if(act != .none){act = .none}
         else{
-            if let text = display.text{
+            if let text = displayLabel.text{
                 if(text.isEmpty){return}
                 else{
-                    display.text?.removeLast()
+                    displayLabel.text?.removeLast()
                 }
             }
         }
