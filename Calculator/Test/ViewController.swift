@@ -12,93 +12,101 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    @IBOutlet weak var display: UITextField!
+    
+    //переменная хранит, начали ли печатать
+    var notstarttyping : Bool = false
+    
+    //action для цифр
+    @IBAction func addnumber(sender: UIButton) {
+        //константа для цифры
+        //берем ее из свойства title вызвавшей этот action кнопки
+        let digit  = sender.currentTitle
+        
+        //если начали печатать
+        if (notstarttyping == false) {
+            //сотрем 0 и присвоим цифру
+            display.text = digit
+            notstarttyping = true
+            
+        } else {
+            //добавим к существующему значению цифру
+            display.text! += digit!
+        }
     }
     
-    @IBOutlet weak var display: UILabel!
-    var first :Bool=false
-    @IBAction func addnumber(sender: UIButton) {
-        if(!first){
-            display.text!=""
-            first=true
-        }
-        if(sender.currentTitle==nil || display.text==nil){
-            return
-        }
-        let digit = sender.currentTitle
-            if(display.text!=="" && digit == "."){
-                return
-            }
-            display.text! += digit!
-    }
+    //первая часть выражения
     var firstval : Float = 0
+    //вторая часть выражения
     var secondval : Float = 0
+    //результат
     var resultat : Float = 0
+    //что это за действие
     var act : String = "0"
     
+    //обработка сложения
     @IBAction func plusact(sender: UIButton) {
-        if(display.text! == "" || display.text==nil){
-            return
-        }
+        //присвоим первой части то что написано в display
+        //конвертируем NSString во float
         firstval = Float(display.text!)!
+        //покажем, что это сложение
         act = "+"
+        //очистим display
         display.text =  ""
+        
     }
     
+    //обработка вычитания
     @IBAction func minusact(sender: UIButton) {
-        if(!first){
-            display.text!=""
-            first=true
-        }
-        if(display.text! == "" || display.text==nil){
-            let digit  = sender.currentTitle
-            display.text! += digit!
-            return
-        }
+        //присвоим первой части то что написано в display
+        //конвертируем NSString во float
         firstval = Float(display.text!)!
+        //покажем, что это вычитание
         act = "-"
+        //очистим display
         display.text =  ""
     }
     
+    //обработка умножения
     @IBAction func umnact(sender: UIButton) {
-        if(display.text! == "" || display.text==nil){
-            return
-        }
+        //присвоим первой части то что написано в display
+        //конвертируем NSString во float
         firstval = Float(display.text!)!
+        //покажем, что это умножение
         act = "*"
+        //очистим display
         display.text =  ""
     }
     
+    //обработка деления
     @IBAction func delit(sender: UIButton) {
-        if(display.text! == "" || display.text==nil){
-            return
-        }
+        //присвоим первой части то что написано в display
+        //конвертируем NSString во float
         firstval = Float(display.text!)!
+        //покажем, что это деление
         act = "/"
+        //очистим display
         display.text =  ""
     }
-    @IBAction func percentOfDiv(sender: UIButton) {
-        if(display.text! == "" || display.text==nil){
-            return
-        }
-        firstval = Float(display.text!)!
-        act = "%"
-        display.text =  ""
-    }
+    
+    //очистка, обработка C
     @IBAction func clearact(sender: UIButton) {
+        //обнулим все переменные
         firstval = 0
         secondval = 0
         act = ""
-        if(display.text==nil){
-            return
-        }
-        display.text =  "0"
+        //очистим display
+        display.text =  ""
     }
     
+    //обработка "равно"
     @IBAction func ravnoact(sender: UIButton) {
-        if(display.text! == "" || display.text==nil){
-            return
-        }
+        //присваиваем второй части выражения, то что написано в display
         secondval = Float(display.text!)!
+        //смотрим какое это действие и выполняем его
+        //результат записываем в переменную resultat
         switch act {
         case "+":
             resultat = firstval + secondval
@@ -108,14 +116,14 @@ class ViewController: UIViewController {
             resultat = firstval * secondval
         case "/":
             resultat = firstval / secondval
-        case "%":
-            resultat = firstval.truncatingRemainder(dividingBy: secondval)
         default:
-            return
+            print("other")
         }
+        //присваиваем значение переменной resultat метке
         display.text = String(resultat)
-        act=""
         
     }
+
+
 }
 
