@@ -9,121 +9,135 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var history: UILabel!
+    enum Operation : String {
+        case plus = "+"
+        case minus = "-"
+        case mult = "*"
+        case div = "/"
+        case remaind = "%"
+        case none = ""
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
-    @IBOutlet weak var display: UITextField!
-    
-    //переменная хранит, начали ли печатать
-    var notstarttyping : Bool = false
-    
-    //action для цифр
+    var errorClear = false
     @IBAction func addnumber(sender: UIButton) {
-        //константа для цифры
-        //берем ее из свойства title вызвавшей этот action кнопки
-        let digit  = sender.currentTitle
+        errorClearFunc()
+        if let text = display.text, let digit = sender.currentTitle {
+            if(text.count>=13){return}
+            if (digit.elementsEqual(".")) {
+                if (text.last=="." || text.isEmpty || text.contains(".")){
+                    return
+                } else {
+                    display.text! += digit
+                }
+            } else{
+                display.text! += digit
+            }
+        }
         
-        //если начали печатать
-        if (notstarttyping == false) {
-            //сотрем 0 и присвоим цифру
-            display.text = digit
-            notstarttyping = true
-            
-        } else {
-            //добавим к существующему значению цифру
-            display.text! += digit!
+    }
+    var firstval : Float = 0
+    var secondval : Float = 0
+    var resultat : Float = 0
+    var act : Operation = .none
+    @IBAction func operation(sender: UIButton) {
+        errorClearFunc()
+        if let text = display.text,let digit = sender.currentTitle {
+            if text.isEmpty && digit.isEmpty {return}
+            if let  num  = Float(text){
+                firstval = num
+                act = Operation.init(rawValue: digit) ?? .none
+                display.text =  ""
+            }
         }
     }
-    
-    //первая часть выражения
-    var firstval : Float = 0
-    //вторая часть выражения
-    var secondval : Float = 0
-    //результат
-    var resultat : Float = 0
-    //что это за действие
-    var act : String = "0"
-    
-    //обработка сложения
-    @IBAction func plusact(sender: UIButton) {
-        //присвоим первой части то что написано в display
-        //конвертируем NSString во float
-        firstval = Float(display.text!)!
-        //покажем, что это сложение
-        act = "+"
-        //очистим display
-        display.text =  ""
-        
-    }
-    
-    //обработка вычитания
-    @IBAction func minusact(sender: UIButton) {
-        //присвоим первой части то что написано в display
-        //конвертируем NSString во float
-        firstval = Float(display.text!)!
-        //покажем, что это вычитание
-        act = "-"
-        //очистим display
-        display.text =  ""
-    }
-    
-    //обработка умножения
-    @IBAction func umnact(sender: UIButton) {
-        //присвоим первой части то что написано в display
-        //конвертируем NSString во float
-        firstval = Float(display.text!)!
-        //покажем, что это умножение
-        act = "*"
-        //очистим display
-        display.text =  ""
-    }
-    
-    //обработка деления
-    @IBAction func delit(sender: UIButton) {
-        //присвоим первой части то что написано в display
-        //конвертируем NSString во float
-        firstval = Float(display.text!)!
-        //покажем, что это деление
-        act = "/"
-        //очистим display
-        display.text =  ""
-    }
-    
-    //очистка, обработка C
     @IBAction func clearact(sender: UIButton) {
-        //обнулим все переменные
+        errorClearFunc()
         firstval = 0
         secondval = 0
-        act = ""
-        //очистим display
-        display.text =  ""
+        act = .none
+        if display.text != nil {
+            display.text =  ""
+        }
+    }
+    @IBAction func change(sender: UIButton) {
+        errorClearFunc()
+        if var text = display.text {
+            if (text.isEmpty || text.last=="."){return}
+            if(text.first=="-"){
+                text.removeFirst();
+            }
+            else{
+                text="-"+text
+            }
+            display.text = text
+        }
     }
     
-    //обработка "равно"
     @IBAction func ravnoact(sender: UIButton) {
-        //присваиваем второй части выражения, то что написано в display
-        secondval = Float(display.text!)!
-        //смотрим какое это действие и выполняем его
-        //результат записываем в переменную resultat
+        errorClearFunc()
+        if let text = display.text {
+        if text.isEmpty{return}
+            if let num = Float(text){
+        secondval=num
         switch act {
-        case "+":
+        case .plus:
             resultat = firstval + secondval
-        case "-":
+        case .minus:
             resultat = firstval - secondval
-        case "*":
+        case .mult:
             resultat = firstval * secondval
-        case "/":
+        case .div:
+            if(secondval==0){display.text="Not divide by zero";errorClear = true;return}
             resultat = firstval / secondval
+        case .remaind:
+            resultat = firstval.truncatingRemainder(dividingBy: secondval)
         default:
-            print("other")
+            return
         }
-        //присваиваем значение переменной resultat метке
+        if history.text != nil {
+            history.text = "\(firstval)\(act.rawValue)\(secondval)"
+        }
         display.text = String(resultat)
-        
+                act = .none
+            }
+        }
     }
-
-
+    func errorClearFunc(){
+        if(errorClear){
+            errorClear = false
+            if(display.text != nil){
+                display.text=""
+            }
+        }
+    }
+    @IBAction func back(sender: UIButton) {
+        if(act != .none){act = .none}
+        else{
+            if let text = display.text{
+                if(text.isEmpty){return}
+                else{
+                    display.text?.removeLast()
+                }
+            }
+        }
+    }
 }
+/*if display.text?.isEmpty ?? true {
+    display.text!
+}
+
+if let text = display.text, !text.isEmpty {
+    text
+}
+guard let text = display.text else {print("Error getting value") ; return}
+text
+
+if display.text != nil, display.text!.isEmpty {
+    display.text!
+}*/
 
