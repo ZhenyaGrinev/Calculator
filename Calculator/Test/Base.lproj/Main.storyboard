@@ -22,16 +22,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="325" height="306"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="amg-b0-tM3">
-                                                <rect key="frame" x="0.0" y="0.0" width="325" height="102"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="325" height="153"/>
                                             </stackView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OGM-nA-AcS">
-                                                <rect key="frame" x="0.0" y="102" width="325" height="102"/>
-                                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                <color key="textColor" systemColor="tertiarySystemGroupedBackgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sq6-ha-Zxa">
-                                                <rect key="frame" x="0.0" y="204" width="325" height="102"/>
+                                                <rect key="frame" x="0.0" y="153" width="325" height="153"/>
                                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="30"/>
                                                 <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -281,8 +275,7 @@
                     </view>
                     <connections>
                         <outlet property="displayLabel" destination="sq6-ha-Zxa" id="GyL-HA-LRb"/>
-                        <outlet property="history" destination="OGM-nA-AcS" id="WgN-ti-QYh"/>
-                        <outlet property="stackHistory" destination="amg-b0-tM3" id="Bd9-Bj-HHd"/>
+                        <outlet property="stackHistoryUIStackView" destination="amg-b0-tM3" id="Bd9-Bj-HHd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zU5-5x-5Uu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

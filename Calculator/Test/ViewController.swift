@@ -11,8 +11,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
-    @IBOutlet weak var history: UILabel!
-    @IBOutlet weak var stackHistory: UIStackView!
+    @IBOutlet weak var stackHistoryUIStackView: UIStackView!
     
     enum Operation : String {
         case plus = "+"
@@ -81,9 +80,9 @@ class ViewController: UIViewController {
         firstval = nil
         secondval = nil
         act = nil
-        if displayLabel.text != nil && history.text != nil{
+        if displayLabel.text != nil{
             displayLabel.text = String("")
-            history.text =  String("")
+            stackHistoryUIStackView.removeFromSuperview()
         }
     }
     @IBAction func change(sender: UIButton) {
@@ -123,18 +122,14 @@ class ViewController: UIViewController {
         default:
             return
         }
-        /*if history.text != nil {
-            history.text! += "\(num)\(operat.rawValue)\(num2) \n"
-        }*/
             let sss = UITextField()
             sss.text = "\(num)\(operat.rawValue)\(num2)"
-            if stackHistory.subviews.count < 5 {
-            stackHistory.addArrangedSubview(sss)
+            if stackHistoryUIStackView.subviews.count < 5 {
+            stackHistoryUIStackView.addArrangedSubview(sss)
             }
             else{
-                stackHistory.subviews[0].removeFromSuperview()
-                stackHistory.addArrangedSubview(sss)
-                print(stackHistory.subviews.count)
+                stackHistoryUIStackView.subviews[0].removeFromSuperview()
+                stackHistoryUIStackView.addArrangedSubview(sss)
             }
                 if let res = resultat{
         displayLabel.text = String(res)
