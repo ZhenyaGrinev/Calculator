@@ -7,93 +7,80 @@
 //
 
 import UIKit
-
 class ViewController: UIViewController {
     
     @IBOutlet weak var displayLabel: UILabel!
     @IBOutlet weak var stackHistoryUIStackView: UIStackView!
-    
-    enum Operation : String {
-        case plus = "+"
-        case minus = "-"
-        case mult = "*"
-        case div = "/"
-        case remaind = "%"
-        case point = "."
-    }
-    enum Numbers : Int {
-        case zero = 0
-        case one = 1
-        case two = 2
-        case three = 3
-        case four = 4
-        case five = 5
-        case six = 6
-        case seven = 7
-        case eight = 8
-        case nine = 9
-    }
-    var firstval : Float?
-    var secondval : Float?
-    var resultat : Float?
-    var act : Operation?
-    var number : Numbers?
-    var errorClear = false
-    
+    var model = Model()
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     @IBAction func addnumber(sender: UIButton) {
         errorClearFunc()
         if let text = displayLabel.text {
-            if let num = Numbers.init(rawValue:sender.tag){
-            if(text.count>=13){return}
+            if let num = Numbers.init(rawValue:sender.currentTitle!){
+                if(text.count>=13){return}
+                if(num.rawValue == Numbers.change.rawValue){
+                    displayLabel.text! = "-"+text
+                    return
+                }
                 displayLabel.text! += String(num.rawValue)
             }
         }
     }
+    
     @IBAction func addpoint(sender: UIButton) {
         errorClearFunc()
         if let text = displayLabel.text {
             if(text.count>=13){return}
-                if (text.last=="." || text.isEmpty || text.contains(".")){
-                    return
-                } else {
-                    displayLabel.text! += Operation.point.rawValue
-                }
+            
+            if (text.last==Numbers.point.rawValue.first || text.isEmpty || text.contains(Numbers.point.rawValue)){
+                return
+            } else {
+                displayLabel.text! += Numbers.point.rawValue
+            }
         }
         
     }
+    
     @IBAction func operation(sender: UIButton) {
         errorClearFunc()
         if let text = displayLabel.text,let digit = sender.currentTitle {
             if text.isEmpty && digit.isEmpty {return}
             if let  num  = Float(text){
-                firstval = num
-                act = Operation.init(rawValue: digit) ?? nil
-                displayLabel.text =  String("")
+                model.firstval = num
+                model.act = Operation.init(rawValue: digit) ?? nil
+                displayLabel.text =  ""
             }
         }
     }
+    
     @IBAction func clearact(sender: UIButton) {
         errorClearFunc()
-        firstval = nil
-        secondval = nil
-        act = nil
+        model.firstval = nil
+        model.secondval = nil
+        model.act = nil
         if displayLabel.text != nil{
-            displayLabel.text = String("")
-            stackHistoryUIStackView.removeFromSuperview()
+            displayLabel.text = ""
+            let sub  = stackHistoryUIStackView.subviews
+            if(!sub.isEmpty){
+                for view in sub{
+                    view.removeFromSuperview()
+                }
+            }
         }
     }
+    
     @IBAction func change(sender: UIButton) {
         errorClearFunc()
         if var text = displayLabel.text {
-            if (text.isEmpty || text.last=="."){return}
-            if(text.first=="-"){
+            if (text.isEmpty || text.last==Numbers.point.rawValue.first){return}
+            if(text.first==Operation.minus.rawValue.first){
                 text.removeFirst();
             }
             else{
-                text="-"+text
+                text=Operation.minus.rawValue+text
             }
             displayLabel.text = text
         }
@@ -102,54 +89,54 @@ class ViewController: UIViewController {
     @IBAction func ravnoact(sender: UIButton) {
         errorClearFunc()
         if let text = displayLabel.text {
-        if text.isEmpty{return}
+            if text.isEmpty{return}
             if let tx = Float(text){
-            secondval=tx
-            if let num = firstval,let num2 = secondval{
-                if let operat = act{
-        switch operat {
-        case .plus:
-            resultat = num + num2
-        case .minus:
-            resultat = num - num2
-        case .mult:
-            resultat = num * num2
-        case .div:
-            if(secondval==0){displayLabel.text="Not divide by zero";errorClear = true;return}
-            resultat = num / num2
-        case .remaind:
-            resultat = num.truncatingRemainder(dividingBy: num2)
-        default:
-            return
-        }
-            let sss = UITextField()
-            sss.text = "\(num)\(operat.rawValue)\(num2)"
-            if stackHistoryUIStackView.subviews.count < 5 {
-            stackHistoryUIStackView.addArrangedSubview(sss)
-            }
-            else{
-                stackHistoryUIStackView.subviews[0].removeFromSuperview()
-                stackHistoryUIStackView.addArrangedSubview(sss)
-            }
-                if let res = resultat{
-        displayLabel.text = String(res)
-                act = nil
+                model.secondval=tx
+                if let num = model.firstval,let num2 = model.secondval{
+                    if let operat = model.act{
+                        switch operat {
+                        case .plus:
+                            model.resultat = num + num2
+                        case .minus:
+                            model.resultat = num - num2
+                        case .mult:
+                            model.resultat = num * num2
+                        case .div:
+                            if(model.secondval==0){displayLabel.text="Not divide by zero";model.errorClear = true;return}
+                            model.resultat = num / num2
+                        case .remaind:
+                            model.resultat = num.truncatingRemainder(dividingBy: num2)
+                        }
+                        let sss = UITextField()
+                        sss.text = "\(num)\(operat.rawValue)\(num2)"
+                        if stackHistoryUIStackView.subviews.count < 5 {
+                            stackHistoryUIStackView.addArrangedSubview(sss)
+                        }
+                        else{
+                            stackHistoryUIStackView.subviews[0].removeFromSuperview()
+                            stackHistoryUIStackView.addArrangedSubview(sss)
+                        }
+                        if let res = model.resultat{
+                            displayLabel.text = String(res)
+                            model.act = nil
+                        }
+                    }
                 }
             }
-            }
-            }
         }
     }
+    
     func errorClearFunc(){
-        if(errorClear){
-            errorClear = false
+        if(model.errorClear){
+            model.errorClear = false
             if(displayLabel.text != nil){
-                displayLabel.text = String("")
+                displayLabel.text = ""
             }
         }
     }
+    
     @IBAction func back(sender: UIButton) {
-        if(act != .none){act = .none}
+        if(model.act != .none){model.act = .none}
         else{
             if let text = displayLabel.text{
                 if(text.isEmpty){return}
@@ -161,16 +148,16 @@ class ViewController: UIViewController {
     }
 }
 /*if display.text?.isEmpty ?? true {
-    display.text!
-}
-
-if let text = display.text, !text.isEmpty {
-    text
-}
-guard let text = display.text else {print("Error getting value") ; return}
-text
-
-if display.text != nil, display.text!.isEmpty {
-    display.text!
-}*/
+ display.text!
+ }
+ 
+ if let text = display.text, !text.isEmpty {
+ text
+ }
+ guard let text = display.text else {print("Error getting value") ; return}
+ text
+ 
+ if display.text != nil, display.text!.isEmpty {
+ display.text!
+ }*/
 
