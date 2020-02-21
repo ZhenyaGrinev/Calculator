@@ -7,13 +7,26 @@
 //
 
 import UIKit
-class ViewController: UIViewController {
+class ViewController: UIViewController , UITableViewDataSource ,UITableViewDelegate{
     
     @IBOutlet weak var displayLabel: UILabel!
-    @IBOutlet weak var stackHistoryUIStackView: UIStackView!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var str : [String] = ["","","","","",""]
     var model = Model()
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return str.count
+    }
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellid", for: indexPath)
+        cell.textLabel?.text = str[indexPath.row]
+        return cell
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
     }
     
     @IBAction func addnumber(sender: UIButton) {
@@ -63,12 +76,6 @@ class ViewController: UIViewController {
         model.act = nil
         if displayLabel.text != nil{
             displayLabel.text = ""
-            let sub  = stackHistoryUIStackView.subviews
-            if(!sub.isEmpty){
-                for view in sub{
-                    view.removeFromSuperview()
-                }
-            }
         }
     }
     
@@ -107,14 +114,12 @@ class ViewController: UIViewController {
                         case .remaind:
                             model.resultat = num.truncatingRemainder(dividingBy: num2)
                         }
-                        let sss = UITextField()
-                        sss.text = "\(num)\(operat.rawValue)\(num2)"
-                        if stackHistoryUIStackView.subviews.count < 5 {
-                            stackHistoryUIStackView.addArrangedSubview(sss)
+                        let sss = "\(num)\(operat.rawValue)\(num2)"
+                        if(str.count < 6){
+                            addnewHistory(hist: sss ,full: false)
                         }
                         else{
-                            stackHistoryUIStackView.subviews[0].removeFromSuperview()
-                            stackHistoryUIStackView.addArrangedSubview(sss)
+                            addnewHistory(hist: sss ,full: true)
                         }
                         if let res = model.resultat{
                             displayLabel.text = String(res)
@@ -124,6 +129,29 @@ class ViewController: UIViewController {
                 }
             }
         }
+    }
+    func addnewHistory(hist : String , full : Bool){
+        if(!full){
+            let index = str.index(str.endIndex, offsetBy: 0)
+            str[index] = hist
+            let indexPath = IndexPath(row: index, section: 0)
+            tableView.beginUpdates()
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+            tableView.endUpdates()
+        }
+        else{
+            str.removeFirst()
+            str.append(hist)
+            let indexPathAdd = IndexPath(row: str.count-1, section: 0)
+            let indexPathDel = IndexPath(row: 0, section: 0)
+            tableView.beginUpdates()
+            tableView.deleteRows(at: [indexPathDel], with: .automatic)
+            tableView.insertRows(at: [indexPathAdd], with: .automatic)
+            tableView.endUpdates()
+        }
+        for a in str{
+             print("+ \(a)")
+         }
     }
     
     func errorClearFunc(){
@@ -160,4 +188,5 @@ class ViewController: UIViewController {
  if display.text != nil, display.text!.isEmpty {
  display.text!
  }*/
+
 
