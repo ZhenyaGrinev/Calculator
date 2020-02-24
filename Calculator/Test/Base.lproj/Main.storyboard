@@ -270,7 +270,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="40"/>
                                                         <state key="normal" title="="/>
                                                         <connections>
-                                                            <action selector="ravnoactWithSender:" destination="ti1-OQ-vmR" eventType="touchUpInside" id="ccB-JA-i6d"/>
+                                                            <action selector="equalWithSender:" destination="ti1-OQ-vmR" eventType="touchUpInside" id="0E7-Je-q1T"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>

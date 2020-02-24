@@ -10,6 +10,7 @@
 		6DD5C21F23FDA740005899E6 /* EnumNumbers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD5C21E23FDA740005899E6 /* EnumNumbers.swift */; };
 		6DD5C22123FDABC3005899E6 /* EnumOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD5C22023FDABC3005899E6 /* EnumOperation.swift */; };
 		6DD5C22423FDAC77005899E6 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DD5C22323FDAC77005899E6 /* Model.swift */; };
+		6DEC19A924045CCC00B43777 /* CalculateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DEC19A824045CCC00B43777 /* CalculateProtocol.swift */; };
 		6DFA897723F582DD00BCE53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFA897623F582DD00BCE53B /* AppDelegate.swift */; };
 		6DFA897923F582DD00BCE53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFA897823F582DD00BCE53B /* SceneDelegate.swift */; };
 		6DFA897B23F582DD00BCE53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DFA897A23F582DD00BCE53B /* ViewController.swift */; };
@@ -22,6 +23,7 @@
 		6DD5C21E23FDA740005899E6 /* EnumNumbers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumNumbers.swift; sourceTree = "<group>"; };
 		6DD5C22023FDABC3005899E6 /* EnumOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumOperation.swift; sourceTree = "<group>"; };
 		6DD5C22323FDAC77005899E6 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		6DEC19A824045CCC00B43777 /* CalculateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateProtocol.swift; sourceTree = "<group>"; };
 		6DFA897323F582DD00BCE53B /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6DFA897623F582DD00BCE53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6DFA897823F582DD00BCE53B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,21 +49,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		6DD5C21D23FDA6F9005899E6 /* Enums */ = {
+		6DEC19AA24046A6400B43777 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				6DD5C22323FDAC77005899E6 /* Model.swift */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		6DEC19AB24046A8300B43777 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				6DEC19A824045CCC00B43777 /* CalculateProtocol.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		6DEC19AC24046A8F00B43777 /* Enumeration */ = {
 			isa = PBXGroup;
 			children = (
 				6DD5C21E23FDA740005899E6 /* EnumNumbers.swift */,
 				6DD5C22023FDABC3005899E6 /* EnumOperation.swift */,
 			);
-			path = Enums;
-			sourceTree = "<group>";
-		};
-		6DD5C22223FDAC65005899E6 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				6DD5C22323FDAC77005899E6 /* Model.swift */,
-			);
-			path = Model;
+			path = Enumeration;
 			sourceTree = "<group>";
 		};
 		6DFA896A23F582DD00BCE53B = {
@@ -85,8 +95,9 @@
 		6DFA897523F582DD00BCE53B /* Test */ = {
 			isa = PBXGroup;
 			children = (
-				6DD5C22223FDAC65005899E6 /* Model */,
-				6DD5C21D23FDA6F9005899E6 /* Enums */,
+				6DEC19AA24046A6400B43777 /* Class */,
+				6DEC19AB24046A8300B43777 /* Protocol */,
+				6DEC19AC24046A8F00B43777 /* Enumeration */,
 				6DFA897623F582DD00BCE53B /* AppDelegate.swift */,
 				6DFA897823F582DD00BCE53B /* SceneDelegate.swift */,
 				6DFA897A23F582DD00BCE53B /* ViewController.swift */,
@@ -197,6 +208,7 @@
 				6DD5C22423FDAC77005899E6 /* Model.swift in Sources */,
 				6DFA897923F582DD00BCE53B /* SceneDelegate.swift in Sources */,
 				6DD5C22123FDABC3005899E6 /* EnumOperation.swift in Sources */,
+				6DEC19A924045CCC00B43777 /* CalculateProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
